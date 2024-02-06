@@ -4,8 +4,10 @@ class DataModel {
   int? age;
   String? position;
   String? salary;
+  String? image;
 
-  DataModel({this.id, this.name, this.age, this.salary, this.position});
+  DataModel(
+      {this.id, this.name, this.age, this.salary, this.position, this.image});
 
   factory DataModel.fromJson(Map<String, dynamic> json) {
     return DataModel(
@@ -14,6 +16,7 @@ class DataModel {
       age: json['age'] != null ? int.parse(json['age'].toString()) : null,
       salary: json['salary'],
       position: json['position'],
+      image: json['image'],
     );
   }
 
@@ -23,6 +26,7 @@ class DataModel {
       'age': age,
       'salary': salary,
       'position': position,
+      'image': image,
     };
   }
 }

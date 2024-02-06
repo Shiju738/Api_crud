@@ -1,12 +1,10 @@
-// ignore_for_file: library_private_types_in_public_api, avoid_print, use_build_context_synchronously
-
-// }import 'package:employeeapi/api/api_json.dart';
-import 'package:employeeapi/api/api_json.dart';
-import 'package:employeeapi/api/api_service.dart';
-import 'package:employeeapi/const/employe_card.dart';
-import 'package:employeeapi/screens/edit_employee.dart';
-import 'package:employeeapi/screens/home_page.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:employeeapi/service/api_json.dart';
+import 'package:employeeapi/service/api_service.dart';
+import 'package:employeeapi/components/employe_card.dart';
+import 'package:employeeapi/views/edit_employee.dart';
+import 'package:employeeapi/views/home_page.dart';
 
 class ProfilePage extends StatefulWidget {
   final String? employeeId;
@@ -21,7 +19,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   ApiService apiService = ApiService();
-  DataModel? employeeData; // Allow employeeData to be null initially
+  DataModel? employeeData;
 
   @override
   void initState() {
@@ -35,7 +33,6 @@ class _ProfilePageState extends State<ProfilePage> {
       setState(() {
         employeeData = employee;
       });
-      // Invoke the onDataUpdated callback if provided
       widget.onDataUpdated?.call();
     } catch (error) {
       print('Error loading employee data: $error');
@@ -47,10 +44,11 @@ class _ProfilePageState extends State<ProfilePage> {
       await apiService.deleteDataById(widget.employeeId!);
 
       Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MyHomePage(),
-          ));
+        context,
+        MaterialPageRoute(
+          builder: (context) => MyHomePage(),
+        ),
+      );
     } catch (error) {
       print('Error deleting employee: $error');
     }
@@ -70,7 +68,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   builder: (context) => EditEmployee(
                     initialId: employeeData?.id,
                     onDataUpdated: () {
-                      loadEmployeeData(); // Refresh the profile page after data update
+                      loadEmployeeData();
                     },
                   ),
                 ),
@@ -92,7 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   actions: [
                     TextButton(
                       onPressed: () {
-                        Navigator.of(context).pop(); // Close the dialog
+                        Navigator.of(context).pop();
                       },
                       child: const Text(
                         'Cancel',
@@ -107,8 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             MaterialPageRoute(
                               builder: (context) => MyHomePage(),
                             ),
-                            (route) =>
-                                false, // Remove all routes from the stack
+                            (route) => false,
                           );
                         });
                       },
@@ -129,35 +126,53 @@ class _ProfilePageState extends State<ProfilePage> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              DetailCard(
-                title: 'Name',
-                value: employeeData?.name ?? 'No Name',
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (employeeData?.image != null)
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundImage: MemoryImage(
+                        base64Decode(employeeData!.image!),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  DetailCard(
+                    title: 'Name',
+                    value: employeeData?.name ?? 'No Name',
+                  ),
+                  const SizedBox(height: 16),
+                  DetailCard(
+                    title: 'Age',
+                    value: employeeData?.age.toString() ?? 'No Age',
+                  ),
+                  const SizedBox(height: 16),
+                  DetailCard(
+                    title: 'Salary',
+                    value: employeeData?.salary ?? 'No Salary',
+                  ),
+                  const SizedBox(height: 16),
+                  DetailCard(
+                    title: 'Position',
+                    value: employeeData?.position ?? 'No Position',
+                  ),
+                  const SizedBox(height: 25),
+                ],
               ),
-              const SizedBox(height: 16),
-              DetailCard(
-                title: 'Age',
-                value: employeeData?.age.toString() ?? 'No Age',
-              ),
-              const SizedBox(height: 16),
-              DetailCard(
-                title: 'Salary',
-                value: employeeData?.salary ?? 'No Salary',
-              ),
-              const SizedBox(height: 16),
-              DetailCard(
-                title: 'Position',
-                value: employeeData?.position ?? 'No Position',
-              ),
-              const SizedBox(
-                height: 25,
-              )
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -1,13 +1,13 @@
 // ignore_for_file: avoid_print, use_rethrow_when_possible
 
 import 'dart:convert';
-import 'package:employeeapi/api/api_json.dart';
+import 'package:employeeapi/service/api_json.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 
 class ApiService extends ChangeNotifier {
   final String apiUrl =
-      'https://crudcrud.com/api/a6af9c277ca14ff990457aa828e590e4/unicorns';
+      'https://crudcrud.com/api/de93f9930407431994920dd94ad8a819/unicorns';
 
   Future<List<DataModel>> fetchData() async {
     try {

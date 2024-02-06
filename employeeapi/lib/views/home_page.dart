@@ -1,9 +1,10 @@
 // ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api
 
-import 'package:employeeapi/api/api_json.dart';
-import 'package:employeeapi/api/api_service.dart';
-import 'package:employeeapi/screens/add_user.dart';
-import 'package:employeeapi/screens/profile_employe.dart';
+import 'package:employeeapi/service/api_json.dart';
+import 'package:employeeapi/service/api_service.dart';
+import 'package:employeeapi/views/add_user.dart';
+
+import 'package:employeeapi/views/profile_employe.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {

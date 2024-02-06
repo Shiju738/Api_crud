@@ -1,6 +1,5 @@
-
-import 'package:employeeapi/screens/login_page.dart';
-import 'package:employeeapi/screens/register_page.dart';
+import 'package:employeeapi/views/login_page.dart';
+import 'package:employeeapi/views/register_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginOrRegister extends StatefulWidget {
