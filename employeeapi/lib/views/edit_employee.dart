@@ -3,7 +3,7 @@
 import 'dart:convert';
 
 import 'package:employeeapi/controller/image_picker.dart';
-import 'package:employeeapi/service/api_json.dart';
+import 'package:employeeapi/model/api_json.dart';
 import 'package:employeeapi/views/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:employeeapi/service/api_service.dart';

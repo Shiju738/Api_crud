@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:employeeapi/service/api_json.dart';
+import 'package:employeeapi/model/api_json.dart';
 import 'package:employeeapi/service/api_service.dart';
 import 'package:employeeapi/components/employe_card.dart';
 import 'package:employeeapi/views/edit_employee.dart';

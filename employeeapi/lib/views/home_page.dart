@@ -1,6 +1,6 @@
 // ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api
 
-import 'package:employeeapi/service/api_json.dart';
+import 'package:employeeapi/model/api_json.dart';
 import 'package:employeeapi/service/api_service.dart';
 import 'package:employeeapi/views/add_user.dart';
 

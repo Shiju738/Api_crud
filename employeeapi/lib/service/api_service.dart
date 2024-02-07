@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print, use_rethrow_when_possible
 
 import 'dart:convert';
-import 'package:employeeapi/service/api_json.dart';
+import 'package:employeeapi/model/api_json.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 
