@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 
 class ApiService extends ChangeNotifier {
   final String apiUrl =
-      'https://crudcrud.com/api/de93f9930407431994920dd94ad8a819/unicorns';
+      'https://crudcrud.com/api/96e10e2fb71e4c6b941ee355ba0fe10b/unicorns';
 
   Future<List<DataModel>> fetchData() async {
     try {

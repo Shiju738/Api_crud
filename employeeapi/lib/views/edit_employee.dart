@@ -1,5 +1,8 @@
 // ignore_for_file: use_build_context_synchronously, avoid_print, library_private_types_in_public_api
 
+import 'dart:convert';
+
+import 'package:employeeapi/controller/image_picker.dart';
 import 'package:employeeapi/service/api_json.dart';
 import 'package:employeeapi/views/home_page.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +28,7 @@ class _EditEmployeeState extends State<EditEmployee> {
   late TextEditingController ageController;
   late TextEditingController salaryController;
   late TextEditingController positionController;
-
+  String? imageUrl;
   @override
   void initState() {
     super.initState();
@@ -46,6 +49,7 @@ class _EditEmployeeState extends State<EditEmployee> {
           ageController.text = employee.age?.toString() ?? '';
           salaryController.text = employee.salary ?? '';
           positionController.text = employee.position ?? '';
+          imageUrl = employee.image;
         });
       }
     } catch (error) {
@@ -71,11 +75,11 @@ class _EditEmployeeState extends State<EditEmployee> {
 
       // Create an instance of DataModel with the updated values
       final updatedEmployee = DataModel(
-        name: updatedName,
-        age: updatedAge,
-        salary: updatedSalary,
-        position: updatedPosition,
-      );
+          name: updatedName,
+          age: updatedAge,
+          salary: updatedSalary,
+          position: updatedPosition,
+          image: imageUrl);
 
       // Update the data using ApiService
       await apiService.updateData(widget.initialId!, updatedEmployee);
@@ -113,6 +117,33 @@ class _EditEmployeeState extends State<EditEmployee> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              CircleAvatar(
+                radius: 50,
+                backgroundImage: imageUrl != null && imageUrl!.isNotEmpty
+                    ? MemoryImage(base64Decode(imageUrl!))
+                    : null,
+                child: imageUrl == null || imageUrl!.isEmpty
+                    ? const Icon(Icons.person, size: 50)
+                    : null,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  final String? newImageBase64 =
+                      await pickImageAndConvertToBase64();
+                  if (newImageBase64 != null) {
+                    setState(() {
+                      imageUrl = newImageBase64;
+                    });
+                  }
+                },
+                child: const Text('Select New Image'),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
               TextFormField(
                 controller: nameController,
                 decoration: const InputDecoration(
