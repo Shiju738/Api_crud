@@ -2,8 +2,6 @@
 
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:employeeapi/controller/image_picker.dart';
 import 'package:employeeapi/model/api_json.dart';
 import 'package:employeeapi/service/api_service.dart';
 import 'package:employeeapi/views/home_page.dart';
@@ -90,7 +88,7 @@ class _AddEmployeeState extends State<AddEmployee> {
               children: [
                 // Add a button to pick an image
                 ElevatedButton(
-                  onPressed:pickImage ,
+                  onPressed: pickImage,
                   child: const Text('Pick Image'),
                 ),
                 const SizedBox(height: 10),
