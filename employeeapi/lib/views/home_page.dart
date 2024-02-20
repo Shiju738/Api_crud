@@ -1,32 +1,11 @@
-// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api
-
-import 'package:employeeapi/model/api_json.dart';
-import 'package:employeeapi/service/api_service.dart';
+import 'package:employeeapi/controller/home_controller.dart';
 import 'package:employeeapi/views/add_user.dart';
-
 import 'package:employeeapi/views/profile_employe.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  late ApiService apiService;
-  late GlobalKey<RefreshIndicatorState> _refreshIndicatorKey;
-
-  @override
-  void initState() {
-    super.initState();
-    apiService = ApiService();
-    _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
-  }
-
-  Future<void> _refreshData() async {
-    // Add your data fetching logic here
-    await apiService.fetchData();
-  }
+class MyHomePage extends StatelessWidget {
+  const MyHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,55 +13,48 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: const Text('Employee List'),
       ),
-      body: RefreshIndicator(
-        key: _refreshIndicatorKey,
-        onRefresh: _refreshData,
-        child: FutureBuilder<List<DataModel>>(
-          future: apiService.fetchData(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(child: Text('No data available'));
-            } else {
-              return ListView.builder(
-                itemCount: snapshot.data!.length,
-                itemBuilder: (context, index) {
-                  final data = snapshot.data![index];
-                  return Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Card(
-                      child: ListTile(
-                        title: Text(
-                          'Name: ${data.name ?? 'No Name'}',
-                          style: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(
-                          'Age: ${data.age ?? 0}',
-                          style: const TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500),
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ProfilePage(
-                                employeeId: data.id,
-                              ),
-                            ),
-                          );
-                        },
+      body: Consumer<EmployeeProvider>(
+        builder: (context, employeeProvider, _) {
+          if (employeeProvider.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (employeeProvider.employeeData.isEmpty) {
+            return const Center(child: Text('No data available'));
+          } else {
+            return ListView.builder(
+              itemCount: employeeProvider.employeeData.length,
+              itemBuilder: (context, index) {
+                final data = employeeProvider.employeeData[index];
+                return Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Card(
+                    child: ListTile(
+                      title: Text(
+                        'Name: ${data.name ?? 'No Name'}',
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
+                      subtitle: Text(
+                        'Age: ${data.age ?? 0}',
+                        style: const TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w500),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProfilePage(
+                              employeeId: data.id,
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              );
-            }
-          },
-        ),
+                  ),
+                );
+              },
+            );
+          }
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

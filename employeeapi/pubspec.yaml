@@ -41,6 +41,7 @@ dependencies:
   fluttertoast: ^8.2.4
   image_picker: ^1.0.7
   dio: ^5.4.0
+  provider:
   
   
 

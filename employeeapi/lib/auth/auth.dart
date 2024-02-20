@@ -1,4 +1,5 @@
 import 'package:employeeapi/auth/login_or_register.dart';
+import 'package:employeeapi/controller/home_controller.dart';
 import 'package:employeeapi/views/home_page.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';

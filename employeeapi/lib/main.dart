@@ -1,8 +1,12 @@
 import 'dart:io';
-import 'package:employeeapi/auth/auth.dart';
-import 'package:employeeapi/firebase_options.dart';
+
+import 'package:employeeapi/controller/home_controller.dart';
+import 'package:employeeapi/controller/profile_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:employeeapi/auth/auth.dart';
+import 'package:employeeapi/firebase_options.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -15,9 +19,19 @@ class MyHttpOverrides extends HttpOverrides {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  HttpOverrides.global = MyHttpOverrides(); // Apply SSL bypass globally
+  HttpOverrides.global = MyHttpOverrides();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => EmployeeProvider(),
+        ),
+       
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -30,7 +44,6 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.deepPurple),
-
       ),
       home: const AuthPage(),
     );

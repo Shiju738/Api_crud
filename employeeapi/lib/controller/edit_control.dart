@@ -1,13 +1,10 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:employeeapi/model/api_json.dart';
 import 'package:employeeapi/service/api_service.dart';
-import 'package:employeeapi/views/home_page.dart';
 
-class EmployeeController with ChangeNotifier {
-  final ApiService apiService;
-
+class EditEmployeeController extends ChangeNotifier {
+  final ApiService apiService = ApiService();
   late TextEditingController nameController;
   late TextEditingController ageController;
   late TextEditingController salaryController;
@@ -15,10 +12,7 @@ class EmployeeController with ChangeNotifier {
   String? imageUrl;
   String? initialId;
 
-  EmployeeController({
-    required this.apiService,
-    required this.initialId,
-  }) {
+  EditEmployeeController({required this.initialId}) {
     nameController = TextEditingController();
     ageController = TextEditingController();
     salaryController = TextEditingController();
@@ -50,7 +44,7 @@ class EmployeeController with ChangeNotifier {
     }
   }
 
-  Future<void> updateEmployeeDetails(BuildContext context, {Function()? onDataUpdated}) async {
+  Future<void> updateEmployeeDetails() async {
     try {
       // Get the updated values from text controllers
       final String updatedName = nameController.text;
@@ -68,28 +62,15 @@ class EmployeeController with ChangeNotifier {
 
       // Create an instance of DataModel with the updated values
       final updatedEmployee = DataModel(
-        id: initialId!,
-        name: updatedName,
-        age: updatedAge,
-        salary: updatedSalary,
-        position: updatedPosition,
-        image: imageUrl,
-      );
+          id: initialId!,
+          name: updatedName,
+          age: updatedAge,
+          salary: updatedSalary,
+          position: updatedPosition,
+          image: imageUrl);
 
       // Update the data using ApiService
       await apiService.updateData(initialId!, updatedEmployee);
-
-      if (onDataUpdated != null) {
-        onDataUpdated();
-      }
-
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => MyHomePage(),
-        ),
-        (route) => false,
-      );
 
       // Notify the listeners or perform any other necessary actions
       notifyListeners();

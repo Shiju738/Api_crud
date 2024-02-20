@@ -1,10 +1,10 @@
-// ignore_for_file: use_build_context_synchronously, avoid_print, no_leading_underscores_for_local_identifiers
+// ignore_for_file: use_build_context_synchronously, avoid_print, no_leading_underscores_for_local_identifiers, use_key_in_widget_constructors, library_private_types_in_public_api
 
-import 'dart:convert';
 import 'dart:io';
-import 'package:employeeapi/model/api_json.dart';
+import 'package:employeeapi/controller/add_employee_controller.dart';
+
 import 'package:employeeapi/service/api_service.dart';
-import 'package:employeeapi/views/home_page.dart';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -34,41 +34,6 @@ class _AddEmployeeState extends State<AddEmployee> {
       setState(() {
         _image = File(image.path);
       });
-    }
-  }
-
-  Future<void> addEmployee() async {
-    try {
-      if (_formKey.currentState!.validate()) {
-        // Create a new DataModel instance with the entered data
-        final newEmployee = DataModel(
-          name: nameController.text,
-          age: int.parse(ageController.text),
-          salary: salaryController.text,
-          position: positionController.text,
-        );
-
-        // Convert the selected image to base64 string
-        final bytes = await _image!.readAsBytes();
-        final imageBase64 = base64Encode(bytes);
-
-        // Add the image to the DataModel
-        newEmployee.image = imageBase64;
-
-        // Call the API service to add the new employee
-        await apiService.addData(newEmployee);
-
-        // Navigate back to the employee list page
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MyHomePage(),
-          ),
-          (route) => false, // Remove all routes from the stack
-        );
-      }
-    } catch (error) {
-      print('Error adding employee: $error');
     }
   }
 
@@ -153,7 +118,18 @@ class _AddEmployeeState extends State<AddEmployee> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: addEmployee,
+                  onPressed: () {
+                    EmployeeManager.addEmployee(
+                      formKey: _formKey,
+                      nameController: nameController,
+                      ageController: ageController,
+                      salaryController: salaryController,
+                      positionController: positionController,
+                      imagee: _image,
+                      context: context,
+                      apiService: ApiService(),
+                    );
+                  },
                   child: const Text('Add Employee'),
                 ),
               ],
