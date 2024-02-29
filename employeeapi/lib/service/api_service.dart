@@ -6,12 +6,14 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 
 class ApiService extends ChangeNotifier {
-  final String apiUrl = 'https://crudcrud.com/api/4d69437c3ba94218b6ce612b2fb46120/unicorns';
+  final String apiUrl =
+      'https://crudcrud.com/api/32a606af7cf44b6c8b761e11445b6f4b/unicorns';
 
   Future<List<DataModel>> fetchData() async {
     try {
+      print("This service is working....");
       final response = await http.get(Uri.parse(apiUrl));
-
+      print(response);
       if (response.statusCode == 200) {
         final List<Map<String, dynamic>> apiData =
             List<Map<String, dynamic>>.from(json.decode(response.body));

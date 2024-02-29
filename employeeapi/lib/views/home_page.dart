@@ -1,11 +1,14 @@
-import 'package:employeeapi/controller/home_controller.dart';
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:employeeapi/views/add_user.dart';
 import 'package:employeeapi/views/profile_employe.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:employeeapi/controller/home_controller.dart';
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
+  const MyHomePage({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +31,15 @@ class MyHomePage extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   child: Card(
                     child: ListTile(
+                      leading: data.image != null
+                          ? CircleAvatar(
+                              backgroundImage: MemoryImage(
+                                base64Decode(data.image!),
+                              ),
+                            )
+                          :const CircleAvatar(
+                              child: Icon(Icons.person),
+                            ),
                       title: Text(
                         'Name: ${data.name ?? 'No Name'}',
                         style: const TextStyle(
@@ -61,7 +73,7 @@ class MyHomePage extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AddEmployee(),
+              builder: (context) => const AddEmployee(),
             ),
           );
         },

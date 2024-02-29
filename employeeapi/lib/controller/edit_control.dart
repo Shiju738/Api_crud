@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:employeeapi/model/api_json.dart';
 import 'package:employeeapi/service/api_service.dart';
@@ -30,14 +29,6 @@ class EditEmployeeController extends ChangeNotifier {
         salaryController.text = employee.salary ?? '';
         positionController.text = employee.position ?? '';
         imageUrl = employee.image;
-
-        // Load the image from the API if imageUrl is available
-        if (imageUrl != null && imageUrl!.isNotEmpty) {
-          final imageData = await apiService.fetchDataById(imageUrl!);
-          // Assuming the API returns the image data as base64 encoded string
-          imageUrl = imageUrl;
-          notifyListeners();
-        }
       }
     } catch (error) {
       print('Error loading employee data: $error');
@@ -62,12 +53,13 @@ class EditEmployeeController extends ChangeNotifier {
 
       // Create an instance of DataModel with the updated values
       final updatedEmployee = DataModel(
-          id: initialId!,
-          name: updatedName,
-          age: updatedAge,
-          salary: updatedSalary,
-          position: updatedPosition,
-          image: imageUrl);
+        id: initialId!,
+        name: updatedName,
+        age: updatedAge,
+        salary: updatedSalary,
+        position: updatedPosition,
+        image: imageUrl,
+      );
 
       // Update the data using ApiService
       await apiService.updateData(initialId!, updatedEmployee);
@@ -80,25 +72,12 @@ class EditEmployeeController extends ChangeNotifier {
     }
   }
 
-  // Function to pick an image from the gallery and convert it to base64
   Future<String?> pickImageAndConvertToBase64() async {
-    // Here you would implement the code to pick an image from the gallery
-    // and convert it to base64. For demonstration, I'll just return a sample base64 string.
     return 'sampleBase64String';
   }
 
   void setImageUrl(String? newImageUrl) {
     imageUrl = newImageUrl;
     notifyListeners();
-  }
-
-  @override
-  void dispose() {
-    // Clean up the text controllers when the controller is disposed
-    nameController.dispose();
-    ageController.dispose();
-    salaryController.dispose();
-    positionController.dispose();
-    super.dispose();
   }
 }
