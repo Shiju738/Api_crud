@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:employeeapi/controller/edit_control.dart';
 import 'package:employeeapi/controller/home_controller.dart';
 import 'package:employeeapi/controller/image_picker.dart';
 import 'package:employeeapi/controller/login_provider.dart';
@@ -40,9 +41,10 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (context) => ImageProviders(),
-        )
-
-        // ChangeNotifierProvider(create: (context) => ,)
+        ),
+        ChangeNotifierProvider(
+          create: (context) => EditEmployeeController(initialId: ''),
+        ),
       ],
       child: const MyApp(),
     ),
@@ -58,7 +60,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.deepPurple),
+        appBarTheme: const AppBarTheme(
+            backgroundColor: Color.fromARGB(158, 158, 158, 1)),
+        colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: Colors.grey, errorColor: Colors.red),
       ),
       home: const AuthPage(),
     );

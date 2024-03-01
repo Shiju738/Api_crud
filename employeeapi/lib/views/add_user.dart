@@ -1,10 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
 
-import 'dart:io';
-
 import 'package:employeeapi/controller/home_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:employeeapi/controller/add_employee_controller.dart';
 import 'package:employeeapi/service/api_service.dart';
@@ -24,7 +21,6 @@ class _AddEmployeeState extends State<AddEmployee> {
   final TextEditingController positionController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  File? _image;
 
   @override
   Widget build(BuildContext context) {

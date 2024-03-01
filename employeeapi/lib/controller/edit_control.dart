@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:employeeapi/model/api_json.dart';
 import 'package:employeeapi/service/api_service.dart';
@@ -28,7 +30,7 @@ class EditEmployeeController extends ChangeNotifier {
         ageController.text = employee.age?.toString() ?? '';
         salaryController.text = employee.salary ?? '';
         positionController.text = employee.position ?? '';
-        imageUrl = employee.image;
+        imageUrl = employee.image ?? '';
       }
     } catch (error) {
       print('Error loading employee data: $error');
@@ -72,8 +74,10 @@ class EditEmployeeController extends ChangeNotifier {
     }
   }
 
-  Future<String?> pickImageAndConvertToBase64() async {
-    return 'sampleBase64String';
+  Future<String?> getImageUrl() async {
+    // Simulate fetching image URL from network with some delay
+    await Future.delayed(const Duration(seconds: 2));
+    return imageUrl;
   }
 
   void setImageUrl(String? newImageUrl) {

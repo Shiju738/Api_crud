@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:employeeapi/controller/home_controller.dart';
 import 'package:employeeapi/controller/profile_controller.dart';
 import 'package:employeeapi/views/home_page.dart';
@@ -15,6 +14,7 @@ class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key, this.employeeId}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _ProfilePageState createState() => _ProfilePageState();
 }
 
@@ -150,7 +150,11 @@ class _ProfilePageState extends State<ProfilePage> {
                               },
                             );
                           },
-                          child: const Text("Delete"),
+                          child:const Center(
+                              child: Text(
+                            "Delete",
+                            style: TextStyle(color: Colors.red),
+                          )),
                         )
                       ],
                     ),

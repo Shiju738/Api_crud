@@ -1,10 +1,9 @@
-// }import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'package:employeeapi/controller/edit_control.dart';
-import 'package:employeeapi/controller/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:employeeapi/controller/edit_control.dart';
+import 'package:employeeapi/controller/home_controller.dart';
 import 'package:employeeapi/views/home_page.dart';
 
 class EditEmployee extends StatelessWidget {
@@ -40,74 +39,74 @@ class _EditEmployeeForm extends StatelessWidget {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Column(children: [
-          Column(
-            children: [
-              Consumer<EditEmployeeController>(
-                builder: (context, controller, _) {
-                  return CircleAvatar(
-                    radius: 50,
-                    backgroundImage: controller.imageUrl != null &&
-                            controller.imageUrl!.isNotEmpty
-                        ? MemoryImage(base64Decode(controller.imageUrl!))
-                        : null,
-
-                    child: null, // Ensure no child widget is shown
-                  );
-                },
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () async {
-                  final ImagePicker picker = ImagePicker();
-                  final XFile? pickedImage =
-                      await picker.pickImage(source: ImageSource.gallery);
-                  if (pickedImage != null) {
-                    // Convert picked image to base64 string
-                    final bytes = await pickedImage.readAsBytes();
-                    final String newImageBase64 = base64Encode(bytes);
-                    // Set the image URL in the controller
-                    controller.setImageUrl(newImageBase64);
-                  }
-                },
-                child: const Text('Select New Image'),
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: controller.nameController,
-                decoration: const InputDecoration(labelText: 'Name'),
-              ),
-              TextField(
-                controller: controller.ageController,
-                decoration: const InputDecoration(labelText: 'Age'),
-                keyboardType: TextInputType.number,
-              ),
-              TextField(
-                controller: controller.salaryController,
-                decoration: const InputDecoration(labelText: 'Salary'),
-              ),
-              TextField(
-                controller: controller.positionController,
-                decoration: const InputDecoration(labelText: 'Position'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  controller.updateEmployeeDetails().then((_) {
-                    Provider.of<EmployeeProvider>(context, listen: false)
-                        .fetchData();
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const MyHomePage(),
-                        ),
-                        (route) => false).then((_) => controller);
-                  });
-                },
-                child: const Text('Update'),
-              ),
-            ],
-          ),
-        ]),
+        child: Column(
+          children: [
+            Consumer<EditEmployeeController>(
+              builder: (context, controller, _) {
+                return CircleAvatar(
+                  radius: 50,
+                  backgroundImage: controller.imageUrl != null &&
+                          controller.imageUrl!.isNotEmpty
+                      ? MemoryImage(base64Decode(controller.imageUrl!))
+                      : const AssetImage("image/dummy_1.png") as ImageProvider,
+                );
+              },
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () async {
+                final ImagePicker picker = ImagePicker();
+                final XFile? pickedImage =
+                    await picker.pickImage(source: ImageSource.gallery);
+                if (pickedImage != null) {
+                  // Convert picked image to base64 string
+                  final bytes = await pickedImage.readAsBytes();
+                  final String newImageBase64 = base64Encode(bytes);
+                  // Set the image URL in the controller
+                  controller.setImageUrl(newImageBase64);
+                }
+              },
+              child: const Text('Select New Image'),
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: controller.nameController,
+              decoration: const InputDecoration(labelText: 'Name'),
+            ),
+            TextField(
+              controller: controller.ageController,
+              decoration: const InputDecoration(labelText: 'Age'),
+              keyboardType: TextInputType.number,
+            ),
+            TextField(
+              controller: controller.salaryController,
+              decoration: const InputDecoration(labelText: 'Salary'),
+            ),
+            TextField(
+              controller: controller.positionController,
+              decoration: const InputDecoration(labelText: 'Position'),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                controller.updateEmployeeDetails().then((_) {
+                  Provider.of<EmployeeProvider>(context, listen: false)
+                      .fetchData();
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MyHomePage(),
+                    ),
+                    (route) => false,
+                  ).then((_) => controller);
+                });
+              },
+              child: const Text('Update'),
+            ),
+          ],
+        ),
       ),
     );
   }

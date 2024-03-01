@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:employeeapi/views/add_user.dart';
 import 'package:employeeapi/views/profile_employe.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +6,9 @@ import 'package:provider/provider.dart';
 import 'package:employeeapi/controller/home_controller.dart';
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key});
+  const MyHomePage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class MyHomePage extends StatelessWidget {
                                 base64Decode(data.image!),
                               ),
                             )
-                          :const CircleAvatar(
+                          : const CircleAvatar(
                               child: Icon(Icons.person),
                             ),
                       title: Text(
